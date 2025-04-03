@@ -1,23 +1,16 @@
-document.addEventListener('DOMContentLoaded', function() {
-  // Function to get the value of a cookie by name
-  function getCookie(name) {
-    let cookieArray = document.cookie.split('; ');
-    let cookie = cookieArray.find((row) => row.startsWith(name + '='));
-    return cookie ? cookie.split('=')[1] : null;
-  }
+document.addEventListener('DOMContentLoaded', () => {  // full html load aana kapro dhaa this shld be initiated
+  const getCookie = (count) =>  // cookies normalla( "user=sreya; count=5" ) indha format la dha irukum
+    document.cookie
+      .split('; ')  // changes to [user=sreya , count=5]
+      .find((row) => row.startsWith(count + '='))  // row ndradhu i maari array la traverse aagum idhu valiya it finds count=5
+      ?.split('=')[1] || null; // thirupi adha split panna [count,5] adhula 1 index element 5 ah return pannum illaya null.
 
-  // Function to set a cookie
-  function setCookie(name, value, daysToExpire) {
-    let date = new Date();
-    date.setTime(date.getTime() + daysToExpire * 24 * 60 * 60 * 1000);
-    document.cookie =
-      name + '=' + value + ';expires=' + date.toUTCString() + ';path=/';
-  }
+  const setCookie = (name, value, days) => { 
+    const expires = new Date(Date.now() + days * 864e5).toUTCString(); //currentDate edhuthu adha expire aagura date ahh millisecondss la maathi adha utcs format la maathi expiry date ah vechikirom
+    document.cookie = `${name}=${value};expires=${expires};path=/`; //adha store panrom
+  };
 
-  // 1. Get the value of the 'count' cookie
-  // 2. If the cookie exists, increment the value and update the cookie
-  // 3. If the cookie does not exist, create it and set the value to 1
-  // 4. Display the count on the webpage
-
-  // your code here
+  let count = parseInt(getCookie('count') || 0) + 1; //oru cookie oda count ah increment pannudhu
+  setCookie('count', count, 7); //adha count la store pannudhu
+  document.getElementById('countDisplay').textContent = count; //display pannudhu
 });
